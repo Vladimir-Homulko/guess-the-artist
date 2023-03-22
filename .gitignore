@@ -24,8 +24,11 @@ dist-ssr
 *.sw?
 
 # compiled output
-/dist
-/node_modules
+backend/dist
+backend/node_modules
+
+frontend/dist
+frontend/node_modules
 
 # Tests
 /coverage
@@ -49,3 +52,6 @@ dist-ssr
 # ENV
 /backend/.env
 /frontend/.env
+
+# database
+/mongo_volume
