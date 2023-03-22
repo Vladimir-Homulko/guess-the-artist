@@ -45,3 +45,7 @@ dist-ssr
 !.vscode/tasks.json
 !.vscode/launch.json
 .idea/
+
+# ENV
+/backend/.env
+/frontend/.env
