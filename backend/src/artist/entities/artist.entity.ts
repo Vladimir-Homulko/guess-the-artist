@@ -1,6 +1,5 @@
 import { Document } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { TAlbum } from '../common/types';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ArtistDocument = Artist & Document;
 
@@ -11,8 +10,13 @@ export class Artist {
   @Prop({ required: true })
   fullName: string;
 
-  @Prop()
-  albums: Array<TAlbum>;
+  @Prop(
+    raw({
+      name: { type: String },
+      previewURL: { type: String },
+    }),
+  )
+  albums: Record<string, string>;
 }
 
 export const ArtistSchema = SchemaFactory.createForClass(Artist);
