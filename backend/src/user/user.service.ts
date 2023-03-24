@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
 import { Model, ObjectId } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { BaseUserDto } from './dto/base-user.dto';
 
 @Injectable()
 export class UserService {
@@ -11,9 +11,17 @@ export class UserService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  public async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    const createdUser = new this.userModel(createUserDto);
+  public async create(baseUserDto: BaseUserDto): Promise<UserDocument> {
+    const createdUser = new this.userModel(baseUserDto);
     return createdUser.save();
+  }
+
+  public async getOne(baseUserDto: BaseUserDto): Promise<UserDocument> {
+    return this.userModel.findOne(baseUserDto).exec();
+  }
+
+  public async getById(id: ObjectId): Promise<UserDocument> {
+    return this.userModel.findById(id).exec();
   }
 
   public async update(
@@ -24,6 +32,15 @@ export class UserService {
 
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  public async getOneOrCreate(baseUserDto: BaseUserDto): Promise<UserDocument> {
+    const user = await this.getOne(baseUserDto);
+    if (!user) {
+      return this.create(baseUserDto);
     }
 
     return user;

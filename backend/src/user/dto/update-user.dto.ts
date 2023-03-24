@@ -1,9 +1,7 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
+import { BaseUserDto } from './base-user.dto';
 
-export class UpdateUserDto {
-  @IsString()
-  username?: string;
-
+export class UpdateUserDto extends BaseUserDto {
   @IsNumber()
   points?: number;
 }
