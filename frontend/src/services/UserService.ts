@@ -3,9 +3,9 @@ import { appConfig } from '../config/appConfig';
 
 export class UserService {
 
-  public static async startGame(username: string): Promise<TUser> {
+  public static async createUser(username: string): Promise<TUser> {
     const response = await fetch(
-      `${appConfig.backendUrl}/user/start-game`,
+      `${appConfig.backendUrl}/user/enter-to-game`,
       {
         method: 'POST',
         headers: {
@@ -23,16 +23,11 @@ export class UserService {
     }
   }
 
-  public static async getById(id: string): Promise<TUser> {
+  public static async getTopPlayers(): Promise<TUser[] | []> {
     const response = await fetch(
-      `${appConfig.backendUrl}/user/${id}`
+      `${appConfig.backendUrl}/user/top-players`
     );
-    const data = await response.json();
 
-    return {
-      id: data._id,
-      username: data.username,
-      points: data.points,
-    }
+    return response.json();
   }
 }

@@ -3,19 +3,25 @@ import Logo from '/logo.svg';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { TUser } from '../common/types';
+import { GameService } from '../services/GameService';
+import { HOME_PATH } from '../common/constants';
 
 interface Props {
   user: TUser | null;
   updateUser: (user: TUser | null) => void;
+  exitGame: (isExit: boolean) => void;
 }
 
 const Header = ({ user, updateUser }: Props) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    localStorage.removeItem('userId');
-    updateUser(null);
-    navigate('/');
+  const handleClick = async () => {
+    if (user) {
+      await GameService.finish(user.id);
+      localStorage.removeItem('userId');
+      updateUser(null);
+      navigate(HOME_PATH);
+    }
   }
 
   return (

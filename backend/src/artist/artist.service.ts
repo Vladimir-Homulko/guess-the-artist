@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Artist, ArtistDocument } from './entities/artist.entity';
-import { Aggregate, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { ItunesService } from '../itunes/itunes.service';
 
@@ -21,8 +21,9 @@ export class ArtistService {
     await this.artistModel.insertMany(createdArtists);
   }
 
-  public async getRandomArtist(): Promise<Aggregate<Array<ArtistDocument>>> {
-    return this.artistModel.aggregate([{ $sample: { size: 1 } }]);
+  public async getRandomArtist(): Promise<ArtistDocument> {
+    const data = await this.artistModel.aggregate([{ $sample: { size: 1 } }]);
+    return data[0];
   }
 
   public async updateArtistAlbums(fullName: string): Promise<ArtistDocument> {
@@ -30,7 +31,7 @@ export class ArtistService {
 
     const artist = await this.artistModel.findOneAndUpdate(
       {
-        $where: fullName,
+        fullName,
       },
       {
         albums,

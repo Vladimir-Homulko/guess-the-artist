@@ -3,9 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ArtistDocument = Artist & Document;
 
-@Schema({
-  timestamps: true,
-})
+@Schema()
 export class Artist {
   @Prop({ required: true })
   fullName: string;

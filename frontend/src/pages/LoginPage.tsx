@@ -5,9 +5,12 @@ import { ChangeEvent, FC, useState } from 'react';
 import { UserService } from '../services/UserService';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { ContextType } from '../common/types';
+import { GAME_PATH, USERNAME_ERROR_MESSAGE } from '../common/constants';
+import { GameService } from '../services/GameService';
 
-const Login: FC = () => {
+const LoginPage: FC = () => {
   const [username, setUsername] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const { updateUser } = useOutletContext<ContextType>();
   const navigate = useNavigate();
 
@@ -17,13 +20,14 @@ const Login: FC = () => {
 
   const handleClick = async () => {
     if (!username) {
-      // TODO: throw error
+      setError(USERNAME_ERROR_MESSAGE);
       return;
     }
-    const user = await UserService.startGame(username);
+    const user = await UserService.createUser(username);
     updateUser(user);
     localStorage.setItem('userId', user.id);
-    navigate('/game');
+    const gameData = await GameService.start(user.id);
+    navigate(GAME_PATH, { state: gameData });
   }
 
   return(
@@ -39,10 +43,10 @@ const Login: FC = () => {
         </p>
         <Input
           placeholder={'Enter username'}
-          className={'mb-5'}
           onChange={handleChange}
           value={username}
         />
+        <p className={'text-red-700 mb-5'}>{error}</p>
         <Button
           className={'bg-secondary800'}
           onClick={handleClick}
@@ -54,4 +58,4 @@ const Login: FC = () => {
   )
 }
 
-export default Login
+export default LoginPage

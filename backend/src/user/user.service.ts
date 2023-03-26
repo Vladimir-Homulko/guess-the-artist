@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
-import { Model, ObjectId } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { BaseUserDto } from './dto/base-user.dto';
 
@@ -16,19 +16,21 @@ export class UserService {
     return createdUser.save();
   }
 
-  public async getOne(baseUserDto: BaseUserDto): Promise<UserDocument> {
+  public async findOne(baseUserDto: BaseUserDto): Promise<UserDocument> {
     return this.userModel.findOne(baseUserDto).exec();
   }
 
-  public async getById(id: ObjectId): Promise<UserDocument> {
+  public async findById(id: Types.ObjectId): Promise<UserDocument> {
     return this.userModel.findById(id).exec();
   }
 
   public async update(
-    id: ObjectId,
+    id: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UserDocument> {
-    const user = this.userModel.findByIdAndUpdate(id, updateUserDto);
+    const user = this.userModel.findByIdAndUpdate(id, updateUserDto, {
+      new: true,
+    });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -37,8 +39,10 @@ export class UserService {
     return user;
   }
 
-  public async getOneOrCreate(baseUserDto: BaseUserDto): Promise<UserDocument> {
-    const user = await this.getOne(baseUserDto);
+  public async findOneOrCreate(
+    baseUserDto: BaseUserDto,
+  ): Promise<UserDocument> {
+    const user = await this.findOne(baseUserDto);
     if (!user) {
       return this.create(baseUserDto);
     }
@@ -47,6 +51,6 @@ export class UserService {
   }
 
   public async getTopPlayers(): Promise<Array<UserDocument>> {
-    return this.userModel.find().sort({ points: 1 }).limit(3).exec();
+    return this.userModel.find().sort({ points: -1 }).limit(3).exec();
   }
 }

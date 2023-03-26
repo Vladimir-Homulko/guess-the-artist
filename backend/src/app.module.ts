@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, CacheStore, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -7,6 +7,8 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { ItunesModule } from './itunes/itunes.module';
+import { GameModule } from './game/game.module';
+import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -20,9 +22,18 @@ import { ItunesModule } from './itunes/itunes.module';
         return configService.get<MongooseModuleOptions>('mongoose');
       },
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        store: redisStore,
+        url: configService.get<string>('redis.url'),
+      }),
+    }),
     UserModule,
     SeedsModule,
     ItunesModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { BaseUserDto } from './dto/base-user.dto';
 
@@ -8,26 +8,26 @@ import { BaseUserDto } from './dto/base-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/start-game')
-  public async getOneOrCreate(@Body() baseUserDto: BaseUserDto) {
-    return this.userService.getOneOrCreate(baseUserDto);
+  @Post('/enter-to-game')
+  public async findOneOrCreate(@Body() baseUserDto: BaseUserDto) {
+    return this.userService.findOneOrCreate(baseUserDto);
   }
 
   @Patch(':id')
   public async update(
-    @Param('id') id: ObjectId,
+    @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Get(':id')
-  public async getById(@Param('id') id: ObjectId) {
-    return this.userService.getById(id);
-  }
-
   @Get('top-players')
   public async getTopPlayers() {
     return this.userService.getTopPlayers();
+  }
+
+  @Get(':id')
+  public async findById(@Param('id') id: Types.ObjectId) {
+    return this.userService.findById(id);
   }
 }
