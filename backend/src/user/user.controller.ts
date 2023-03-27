@@ -25,9 +25,4 @@ export class UserController {
   public async getTopPlayers() {
     return this.userService.getTopPlayers();
   }
-
-  @Get(':id')
-  public async findById(@Param('id') id: Types.ObjectId) {
-    return this.userService.findById(id);
-  }
 }
