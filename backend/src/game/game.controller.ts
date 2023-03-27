@@ -1,7 +1,14 @@
-import { Controller, Delete, Get, HttpCode, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { GameService } from './game.service';
 import { Types } from 'mongoose';
-import { HttpStatusCode } from 'axios';
 
 @Controller('game')
 export class GameController {
@@ -13,7 +20,7 @@ export class GameController {
   }
 
   @Post('attempt')
-  @HttpCode(HttpStatusCode.Ok)
+  @HttpCode(HttpStatus.OK)
   public async attempt(
     @Query('userId') userId: string,
     @Query('artistFullName') artistFullName: string,

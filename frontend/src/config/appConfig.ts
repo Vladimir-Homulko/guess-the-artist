@@ -1,3 +1,5 @@
-export const appConfig = {
-  backendUrl: import.meta.env.VITE_BACKEND_URL
-}
+const appConfig = {
+  backendUrl: import.meta.env.VITE_BACKEND_URL,
+};
+
+export default appConfig;

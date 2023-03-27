@@ -5,10 +5,7 @@ import { GameController } from './game.controller';
 import { GameService } from './game.service';
 
 @Module({
-  imports: [
-    UserModule,
-    ArtistModule,
-  ],
+  imports: [UserModule, ArtistModule],
   controllers: [GameController],
   providers: [GameService],
 })

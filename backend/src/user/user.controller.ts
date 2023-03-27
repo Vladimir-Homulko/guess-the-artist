@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Types } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { BaseUserDto } from './dto/base-user.dto';
 

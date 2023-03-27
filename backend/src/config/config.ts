@@ -8,5 +8,5 @@ export const config: ReturnType<typeof registerAs>[] = [
   appConfigFactory,
   mongooseConfigFactory,
   itunesConfigFactory,
-  redisConfigFactory
+  redisConfigFactory,
 ];

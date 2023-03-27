@@ -1,6 +1,6 @@
-import Header from '../components/Header';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
+import Header from '../components/Header';
 import { TUser } from '../common/types';
 
 const Layout = () => {
@@ -9,9 +9,9 @@ const Layout = () => {
 
   return (
     <>
-      <Header user={user} updateUser={setUser} exitGame={setIsGameOver}/>
+      <Header user={user} updateUser={setUser} />
       <main>
-        <Outlet context={{ updateUser: setUser, isGameOver, setIsGameOver }}/>
+        <Outlet context={{ updateUser: setUser, isGameOver, setIsGameOver }} />
       </main>
     </>
   );
