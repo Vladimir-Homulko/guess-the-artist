@@ -14,13 +14,10 @@ $ cp .env.example .env
 ## Running the app
 
 ```bash
-# development
-$ npm run start:dev
+# build
+$ npm run build
 
-# production mode
-$ npm run start
-
-# or you can run this command at root folder
-$ docker-compose up
+# start
+$ npm run preview
 ```
 

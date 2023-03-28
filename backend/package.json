@@ -1,8 +1,8 @@
 {
   "name": "beckend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Guess the artist backend",
+  "author": "Vladimir Homulko",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

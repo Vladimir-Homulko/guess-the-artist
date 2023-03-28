@@ -54,7 +54,7 @@ frontend/node_modules
 /frontend/.env
 
 # database
-/mongo_volume
+/backend/mongo_volume
 
 # BACKEND GENERATED FILES
 /backend/temp
