@@ -55,3 +55,6 @@ frontend/node_modules
 
 # database
 /mongo_volume
+
+# BACKEND GENERATED FILES
+/backend/temp

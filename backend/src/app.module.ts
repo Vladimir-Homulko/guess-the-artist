@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { config } from './config';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
-import { SeedsModule } from './seeds/seeds.module';
 import { GameModule } from './game/game.module';
 import { redisStore } from 'cache-manager-redis-yet';
 
@@ -28,7 +27,6 @@ import { redisStore } from 'cache-manager-redis-yet';
       }),
     }),
     UserModule,
-    SeedsModule,
     GameModule,
   ],
 })

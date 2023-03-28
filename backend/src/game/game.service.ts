@@ -6,6 +6,12 @@ import { Cache } from 'cache-manager';
 import { TGameCache } from '../common/types';
 import { GameDto } from './dto/game.dto';
 import { Artist } from '../artist/entities/artist.entity';
+import { createWriteStream } from 'fs';
+import {
+  NEW_ALBUMS_AVAILABLE_PATH,
+  TOP_PLAYERS_FILE_PATH,
+} from '../common/constants';
+import { UserDocument } from '../user/entities/user.entity';
 
 @Injectable()
 export class GameService {
@@ -34,6 +40,11 @@ export class GameService {
       },
       0,
     );
+
+    const fileStream = createWriteStream(NEW_ALBUMS_AVAILABLE_PATH, {
+      flags: 'a',
+    });
+    fileStream.write(this.getNewAlbumsAvailableString(artist.fullName));
 
     return {
       username: user.username,
@@ -124,6 +135,11 @@ export class GameService {
 
     await this.cacheManager.set(userId, result, 0);
 
+    // write top players to file
+    const topPlayers = await this.userService.getTopPlayers();
+    const fileStream = createWriteStream(TOP_PLAYERS_FILE_PATH);
+    fileStream.write(this.getTopPlayersString(topPlayers));
+
     return {
       username,
       points: result.points,
@@ -136,5 +152,15 @@ export class GameService {
 
   public async finishGame(userId: string): Promise<void> {
     return this.cacheManager.del(userId);
+  }
+
+  private getTopPlayersString(players: UserDocument[]): string {
+    return players
+      .map((player, index) => `${index + 1}. ${player.username}`)
+      .join('\n');
+  }
+
+  private getNewAlbumsAvailableString(fullName: string): string {
+    return `\n${new Date().toISOString()}: ${fullName} - NEW ALBUMS AVAILABLE!`;
   }
 }
